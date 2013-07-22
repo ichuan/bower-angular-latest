@@ -1,4 +1,4 @@
 Description
 ==============
 
-Angular latest build for bower. Current version: angular/angular.js@e14e21904aa61c293cfcb4bd447fabcd192601e4
+Useable angular latest build for bower. Current version: angular/angular.js@e46100f7097d9a8f174bdb9e15d4c6098395c3f2
