@@ -1,10 +1,11 @@
 /**
- * @license AngularJS v1.1.6-e46100f
+ * @license AngularJS v1.1.6-0a3ec5f
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {
-'use strict';
+(function(window, angular, undefined) {'use strict';
+
+var ngResourceMinErr = angular.$$minErr('ngResource');
 
 /**
  * @ngdoc overview
@@ -37,12 +38,11 @@
  *
  * @param {string} url A parametrized URL template with parameters prefixed by `:` as in
  *   `/user/:username`. If you are using a URL with a port number (e.g.
- *   `http://example.com:8080/api`), you'll need to escape the colon character before the port
- *   number, like this: `$resource('http://example.com\\:8080/api')`.
+ *   `http://example.com:8080/api`), it will be respected.
  *
- *   If you are using a url with a suffix, just add the suffix, like this: 
+ *   If you are using a url with a suffix, just add the suffix, like this:
  *   `$resource('http://example.com/resource.json')` or `$resource('http://example.com/:id.json')
- *   or even `$resource('http://example.com/resource/:resource_id.:format')` 
+ *   or even `$resource('http://example.com/resource/:resource_id.:format')`
  *   If the parameter before the suffix is empty, :resource_id in this case, then the `/.` will be
  *   collapsed down to a single `.`.  If you need this sequence to appear and not collapse then you
  *   can escape it with `/\.`.
@@ -152,7 +152,7 @@
  *
  *     On success, the promise is resolved with the same resource instance or collection object,
  *     updated with data from server. This makes it easy to use in
- *     {@link ng.$routeProvider resolve section of $routeProvider.when()} to defer view rendering
+ *     {@link ngRoute.$routeProvider resolve section of $routeProvider.when()} to defer view rendering
  *     until the resource(s) are loaded.
  *
  *     On failure, the promise is resolved with the {@link ng.$http http response} object,
@@ -351,7 +351,7 @@ angular.module('ngResource', ['ng']).
 
         var urlParams = self.urlParams = {};
         forEach(url.split(/\W/), function(param){
-          if (param && (new RegExp("(^|[^\\\\]):" + param + "(\\W|$)").test(url))) {
+          if (!(new RegExp("^\\d+$").test(param)) && param && (new RegExp("(^|[^\\\\]):" + param + "(\\W|$)").test(url))) {
               urlParams[param] = true;
           }
         });
@@ -382,7 +382,7 @@ angular.module('ngResource', ['ng']).
         url = url.replace(/\/\.(?=\w+($|\?))/, '.');
         // replace escaped `/\.` with `/.`
         config.url = url.replace(/\/\\\./, '/.');
-          
+
 
         // set params - delegate param encoding to $http
         forEach(params, function(value, key){
@@ -454,8 +454,8 @@ angular.module('ngResource', ['ng']).
             break;
           case 0: break;
           default:
-            throw "Expected up to 4 arguments [params, data, success, error], got " +
-              arguments.length + " arguments.";
+            throw ngResourceMinErr('badargs',
+              "Expected up to 4 arguments [params, data, success, error], got {0} arguments", arguments.length);
           }
 
           var isInstanceCall = data instanceof Resource;

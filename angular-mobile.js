@@ -1,10 +1,9 @@
 /**
- * @license AngularJS v1.1.6-e46100f
+ * @license AngularJS v1.1.6-0a3ec5f
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {
-'use strict';
+(function(window, angular, undefined) {'use strict';
 
 /**
  * @ngdoc overview
@@ -92,7 +91,7 @@ ngMobile.factory('$swipe', [function() {
       // Whether a swipe is active.
       var active = false;
 
-      element.bind('touchstart mousedown', function(event) {
+      element.on('touchstart mousedown', function(event) {
         startCoords = getCoordinates(event);
         active = true;
         totalX = 0;
@@ -101,12 +100,12 @@ ngMobile.factory('$swipe', [function() {
         eventHandlers['start'] && eventHandlers['start'](startCoords);
       });
 
-      element.bind('touchcancel', function(event) {
+      element.on('touchcancel', function(event) {
         active = false;
         eventHandlers['cancel'] && eventHandlers['cancel']();
       });
 
-      element.bind('touchmove mousemove', function(event) {
+      element.on('touchmove mousemove', function(event) {
         if (!active) return;
 
         // Android will send a touchcancel if it thinks we're starting to scroll.
@@ -141,7 +140,7 @@ ngMobile.factory('$swipe', [function() {
         }
       });
 
-      element.bind('touchend mouseup', function(event) {
+      element.on('touchend mouseup', function(event) {
         if (!active) return;
         active = false;
         eventHandlers['end'] && eventHandlers['end'](getCoordinates(event));
@@ -335,7 +334,7 @@ ngMobile.directive('ngClick', ['$parse', '$timeout', '$rootElement',
       element.removeClass(ACTIVE_CLASS_NAME);
     }
 
-    element.bind('touchstart', function(event) {
+    element.on('touchstart', function(event) {
       tapping = true;
       tapElement = event.target ? event.target : event.srcElement; // IE uses srcElement.
       // Hack for Safari, which can target text nodes instead of containers.
@@ -353,15 +352,15 @@ ngMobile.directive('ngClick', ['$parse', '$timeout', '$rootElement',
       touchStartY = e.clientY;
     });
 
-    element.bind('touchmove', function(event) {
+    element.on('touchmove', function(event) {
       resetState();
     });
 
-    element.bind('touchcancel', function(event) {
+    element.on('touchcancel', function(event) {
       resetState();
     });
 
-    element.bind('touchend', function(event) {
+    element.on('touchend', function(event) {
       var diff = Date.now() - startTime;
 
       var touches = (event.changedTouches && event.changedTouches.length) ? event.changedTouches :
@@ -398,17 +397,17 @@ ngMobile.directive('ngClick', ['$parse', '$timeout', '$rootElement',
     // Fallback click handler.
     // Busted clicks don't get this far, and adding this handler allows ng-tap to be used on
     // desktop as well, to allow more portable sites.
-    element.bind('click', function(event) {
+    element.on('click', function(event) {
       scope.$apply(function() {
         clickHandler(scope, {$event: event});
       });
     });
 
-    element.bind('mousedown', function(event) {
+    element.on('mousedown', function(event) {
       element.addClass(ACTIVE_CLASS_NAME);
     });
 
-    element.bind('mousemove mouseup', function(event) {
+    element.on('mousemove mouseup', function(event) {
       element.removeClass(ACTIVE_CLASS_NAME);
     });
 

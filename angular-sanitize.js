@@ -1,15 +1,35 @@
 /**
- * @license AngularJS v1.1.6-e46100f
+ * @license AngularJS v1.1.6-0a3ec5f
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {
-'use strict';
+(function(window, angular, undefined) {'use strict';
+
+var ngSanitizeMinErr = angular.$$minErr('ngSanitize');
 
 /**
  * @ngdoc overview
  * @name ngSanitize
  * @description
+ * 
+ * The `ngSanitize` module provides functionality to sanitize HTML.
+ * 
+ * # Installation
+ * As a separate module, it must be loaded after Angular core is loaded; otherwise, an 'Uncaught Error:
+ * No module: ngSanitize' runtime error will occur.
+ *
+ * <pre>
+ *   <script src="angular.js"></script>
+ *   <script src="angular-sanitize.js"></script>
+ * </pre>
+ *
+ * # Usage
+ * To make sure the module is available to your application, declare it as a dependency of you application
+ * module.
+ *
+ * <pre>
+ *   angular.module('app', ['ngSanitize']);
+ * </pre>
  */
 
 /*
@@ -129,7 +149,7 @@ var START_TAG_REGEXP = /^<\s*([\w:-]+)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:
   BEGING_END_TAGE_REGEXP = /^<\s*\//,
   COMMENT_REGEXP = /<!--(.*?)-->/g,
   CDATA_REGEXP = /<!\[CDATA\[(.*?)]]>/g,
-  URI_REGEXP = /^((ftp|https?):\/\/|mailto:|tel:|#)/,
+  URI_REGEXP = /^((ftp|https?):\/\/|mailto:|tel:|#)/i,
   NON_ALPHANUMERIC_REGEXP = /([^\#-~| |!])/g; // Match everything outside of normal chars and " (quote character)
 
 
@@ -256,7 +276,7 @@ function htmlParser( html, handler ) {
     }
 
     if ( html == last ) {
-      throw "Parse Error: " + html;
+      throw ngSanitizeMinErr('badparse', "The sanitizer was unable to parse the following block of html: {0}", html);
     }
     last = html;
   }
@@ -283,10 +303,10 @@ function htmlParser( html, handler ) {
 
     var attrs = {};
 
-    rest.replace(ATTR_REGEXP, function(match, name, doubleQuotedValue, singleQoutedValue, unqoutedValue) {
+    rest.replace(ATTR_REGEXP, function(match, name, doubleQuotedValue, singleQuotedValue, unquotedValue) {
       var value = doubleQuotedValue
-        || singleQoutedValue
-        || unqoutedValue
+        || singleQuotedValue
+        || unquotedValue
         || '';
 
       attrs[name] = decodeEntities(value);
