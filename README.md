@@ -1,7 +1,7 @@
 Intro
 ==============
 
-Useable angular latest build for bower. Current version: [v1.1.6-0a3ec5f](https://github.com/angular/angular.js/commit/0a3ec5f8bbc1b51c9188f661df1697cc6a32c6a5)
+Useable angular latest build for bower. Current version: [v1.2.0-3328d33](https://github.com/angular/angular.js/tree/3328d33ed0b9a99649b682aad3c7b234d4f1d8ca)
 
 
 Install
